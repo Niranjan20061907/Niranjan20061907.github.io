@@ -1,287 +1,331 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Niranjan Krishna | Quant Finance Portfolio</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niranjan Krishna | Quant Systems</title>
     
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* --- CUSTOM INTERACTIVE STYLES --- */
-        
-        /* 1. Interactive Background Canvas */
-        #quant-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* Behind everything */
-            opacity: 0.4; /* Subtle */
-            pointer-events: none;
+        /* --- CORE VARIABLES --- */
+        :root {
+            --bg-color: #050505;
+            --card-bg: #0f1014;
+            --accent-green: #00ff88;
+            --accent-blue: #00f0ff;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --font-ui: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --grid-color: rgba(0, 255, 136, 0.05);
         }
 
-        /* 2. Cursor for Typing Effect */
-        .typing-cursor::after {
-            content: '|';
-            animation: blink 1s step-start infinite;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            overflow-x: hidden;
         }
+
+        /* --- UTILITIES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        .mono { font-family: var(--font-code); }
+        .green { color: var(--accent-green); }
+        .blue { color: var(--accent-blue); }
+        
+        /* --- BACKGROUND GRID ANIMATION --- */
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            perspective: 500px;
+            transform-style: preserve-3d;
+        }
+
+        /* --- HEADER & NAV --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100; background: rgba(5,5,5,0.8);
+        }
+        .logo { font-family: var(--font-code); font-weight: 700; font-size: 1.2rem; letter-spacing: -1px; }
+        .socials a { margin-left: 20px; font-size: 0.9rem; opacity: 0.7; }
+        .socials a:hover { opacity: 1; color: var(--accent-green); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 5rem;
+            line-height: 1;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .terminal-box {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            max-width: 600px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+        .prompt { color: var(--accent-green); margin-right: 10px; }
+        .cursor { display: inline-block; width: 8px; height: 15px; background: var(--accent-green); animation: blink 1s infinite; }
+
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* 3. Filter Buttons */
-        .filter-container {
-            text-align: center;
-            margin-bottom: 2em;
+        /* --- TICKER TAPE --- */
+        .ticker-wrap {
+            width: 100%; overflow: hidden; background: #0f1014; border-top: 1px solid #222; border-bottom: 1px solid #222;
+            padding: 10px 0; white-space: nowrap; margin-bottom: 60px;
         }
-        .filter-btn {
-            background: transparent;
-            border: 1px solid #ffffff;
-            color: #ffffff;
-            margin: 0 5px;
-            cursor: pointer;
+        .ticker { display: inline-block; animation: ticker 20s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 2rem; font-family: var(--font-code); font-size: 0.9rem; }
+        .up { color: var(--accent-green); } 
+        
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- SECTIONS --- */
+        .section-title {
+            font-size: 2rem; margin-bottom: 40px; border-left: 4px solid var(--accent-green); padding-left: 20px;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+
+        /* --- PROJECTS GRID --- */
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;
+            margin-bottom: 100px;
+        }
+        
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            padding: 30px;
+            border-radius: 12px;
             transition: all 0.3s ease;
-            font-size: 0.8em;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: #ffffff;
-            color: #1b1b1b;
-            box-shadow: 0 0 15px rgba(255,255,255,0.5);
-        }
-
-        /* 4. Project Card Hover Effects */
-        .posts article {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .posts article:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        /* Chart Container */
-        .chart-container {
             position: relative;
-            height: 250px;
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border-radius: 4px;
-            padding: 10px;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--accent-green), transparent);
+            transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+        }
+
+        .project-card:hover { transform: translateY(-5px); border-color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .project-card:hover::before { transform: scaleX(1); }
+
+        .project-meta {
+            display: flex; justify-content: space-between; margin-bottom: 20px;
+            font-family: var(--font-code); font-size: 0.8rem; color: var(--text-muted);
+        }
+        
+        .tech-stack span {
+            background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; 
+            font-size: 0.75rem; margin-right: 5px; font-family: var(--font-code);
+        }
+
+        .btn-link {
+            display: inline-block; margin-top: 20px; 
+            border-bottom: 1px solid var(--accent-green); padding-bottom: 2px;
+            font-size: 0.9rem;
+        }
+
+        /* --- LIVE CHART SECTION --- */
+        .chart-wrapper {
+            background: var(--card-bg); border: 1px solid #222; padding: 20px; border-radius: 12px;
+            height: 300px; position: relative;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid #222; padding: 50px 0; text-align: center;
+            color: var(--text-muted); font-size: 0.9rem;
+        }
+
+        @media(max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
         }
     </style>
 </head>
-<body class="is-preload">
+<body>
 
-    <canvas id="quant-canvas"></canvas>
+    <div class="bg-grid"></div>
 
-    <div id="wrapper" class="fade-in">
-
-        <div id="intro">
-            <h1>Niranjan Krishna</h1>
-            <p>
-                <span id="typing-text" class="typing-cursor"></span>
-                <br />
-                Building my portfolio in public.
-            </p>
-            <ul class="actions">
-                <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">View Projects</a></li>
-            </ul>
-        </div>
-
-        <header id="header">
-            <a href="index.html" class="logo">Niranjan | Portfolio</a>
-        </header>
-
-        <nav id="nav">
-            <ul class="links">
-                <li class="active"><a href="index.html">Home</a></li>
-                <li><a href="generic.html">About</a></li>
-            </ul>
-            <ul class="icons">
-                <li><a href="https://github.com/" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-                <li><a href="https://www.linkedin.com/in/niranjan-krishnarajarajan-768625332/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-            </ul>
+    <div class="container">
+        <nav>
+            <div class="logo">NIRANJAN<span class="green">_KRISHNA</span></div>
+            <div class="socials">
+                <a href="https://github.com/">GH</a>
+                <a href="https://linkedin.com/">LI</a>
+                <a href="mailto:k.niranjan2006@gmail.com">EMAIL</a>
+            </div>
         </nav>
+    </div>
 
-        <div id="main">
+    <div class="container hero">
+        <div class="mono" style="color: var(--accent-green); margin-bottom: 10px;">> INITIALIZING SYSTEM...</div>
+        <h1>QUANTITATIVE<br>ENGINEERING</h1>
+        
+        <div class="terminal-box">
+            <p><span class="prompt">user@niranjan:~$</span> loading_profile.py</p>
+            <p style="margin-top: 10px; color: var(--text-muted);">
+                > Focus: Quantitative Finance, ML, Web3<br>
+                > Status: Building real systems in public<br>
+                > Current Task: Analyzing Market Microstructure...<span class="cursor"></span>
+            </p>
+        </div>
+    </div>
 
-            <article class="post featured">
-                <header class="major">
-                    <span class="date">2025</span>
-                    <h2>About Me</h2>
-                    <p>
-                        I am learning <b>Quantitative Finance</b>, <b>Machine Learning</b>, and building real systems using 
-                        <b>Web3</b> and full-stack development.
-                        <br /><br />
-                        This portfolio shows my work, projects, and growth in finance, data, and systems engineering.
-                    </p>
-                </header>
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">PYTHON <span class="up">▲</span></div>
+            <div class="ticker-item">C++ <span class="blue">●</span></div>
+            <div class="ticker-item">STOCHASTIC_CALCULUS <span class="up">▲</span></div>
+            <div class="ticker-item">MACHINE_LEARNING <span class="up">▲</span></div>
+            <div class="ticker-item">SOLIDITY <span class="blue">●</span></div>
+            <div class="ticker-item">SMART_CONTRACTS <span class="up">▲</span></div>
+            <div class="ticker-item">TIME_SERIES <span class="up">▲</span></div>
+            <div class="ticker-item">PYTHON <span class="up">▲</span></div>
+            <div class="ticker-item">C++ <span class="blue">●</span></div>
+            <div class="ticker-item">STOCHASTIC_CALCULUS <span class="up">▲</span></div>
+            <div class="ticker-item">MACHINE_LEARNING <span class="up">▲</span></div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <section style="margin-bottom: 80px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+                <h2 class="section-title" style="margin-bottom: 0;">Market Simulation</h2>
+                <span class="mono" style="font-size: 0.8rem; color: var(--accent-green);">● LIVE: GEOMETRIC BROWNIAN MOTION</span>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="financeChart"></canvas>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2 class="section-title">Deployments & Research</h2>
+            
+            <div class="projects-grid">
                 
-                <div style="text-align:center; margin-bottom: 2em;">
-                    <h3>Live Brownian Motion Simulation</h3>
-                    <p style="font-size: 0.8em; opacity: 0.7;">Running a live stochastic process (random walk) in your browser.</p>
-                    <div class="chart-container">
-                        <canvas id="liveChart"></canvas>
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span>DEPLOYMENT</span>
+                        <span class="green">ONLINE</span>
                     </div>
+                    <h3>FlowMint Web3 Platform</h3>
+                    <p style="margin: 15px 0; color: #aaa; line-height: 1.6;">
+                        A decentralized investment platform allowing creators to tokenize future revenue streams. Implements complex smart contracts for investor logic.
+                    </p>
+                    <div class="tech-stack">
+                        <span>Next.js</span><span>Solidity</span><span>FastAPI</span>
+                    </div>
+                    <a href="https://flowmint-f75h.onrender.com/" class="btn-link">View Terminal ></a>
                 </div>
 
-                <ul class="actions special">
-                    <li><a href="generic.html" class="button large">Read Full Bio</a></li>
-                </ul>
-            </article>
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span>ALGORITHM</span>
+                        <span class="blue">IN DEV</span>
+                    </div>
+                    <h3>Portfolio Optimization Engine</h3>
+                    <p style="margin: 15px 0; color: #aaa; line-height: 1.6;">
+                        Python-based engine calculating Markowitz Efficient Frontier. Optimizes asset weights to maximize Sharpe Ratio using historical data.
+                    </p>
+                    <div class="tech-stack">
+                        <span>Python</span><span>NumPy</span><span>Pandas</span>
+                    </div>
+                    <a href="#" class="btn-link">View Code ></a>
+                </div>
 
-            <div class="filter-container">
-                <button class="filter-btn active" onclick="filterProjects('all')">All</button>
-                <button class="filter-btn" onclick="filterProjects('web3')">Web3 / Dev</button>
-                <button class="filter-btn" onclick="filterProjects('quant')">Quant / ML</button>
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span>RESEARCH</span>
+                        <span class="blue">IN DEV</span>
+                    </div>
+                    <h3>Order Flow Analysis</h3>
+                    <p style="margin: 15px 0; color: #aaa; line-height: 1.6;">
+                        Analyzing limit order book (LOB) imbalances to detect institutional buying pressure and short-term alpha signals.
+                    </p>
+                    <div class="tech-stack">
+                        <span>Microstructure</span><span>Statistics</span>
+                    </div>
+                    <a href="#" class="btn-link">Read Paper ></a>
+                </div>
+
             </div>
-
-            <section class="posts">
-
-                <article class="project-item web3">
-                    <header>
-                        <span class="date">REAL PROJECT</span>
-                        <h2>FlowMint<br />Web3 Investment Platform</h2>
-                    </header>
-                    <a href="https://flowmint-f75h.onrender.com/" class="image fit">
-                        <img src="images/pic02.jpg" alt="FlowMint Project" />
-                    </a>
-                    <p>
-                        FlowMint is a full-stack Web3 platform that allows creators to <b>tokenize revenue</b> 
-                        and investors to fund projects via blockchain.
-                    </p>
-                    <p>
-                        <b>Stack:</b> Next.js, FastAPI, Solidity, Web3
-                    </p>
-                    <ul class="actions special">
-                        <li><a href="https://flowmint-f75h.onrender.com/" class="button primary">Live Project</a></li>
-                    </ul>
-                </article>
-
-                <article class="project-item quant">
-                    <header>
-                        <span class="date">RESEARCH</span>
-                        <h2>Portfolio Optimization</h2>
-                    </header>
-                    <p>Markowitz efficient frontier implementation using Python. Calculating optimal weights for risk-adjusted returns.</p>
-                    <ul class="actions special"><li><span class="button disabled">Coming Soon</span></li></ul>
-                </article>
-
-                <article class="project-item quant">
-                    <header>
-                        <span class="date">RESEARCH</span>
-                        <h2>Backtesting Engine</h2>
-                    </header>
-                    <p>Building an event-driven backtester to analyze momentum and mean-reversion strategies on historical data.</p>
-                    <ul class="actions special"><li><span class="button disabled">Coming Soon</span></li></ul>
-                </article>
-
-                <article class="project-item quant">
-                    <header>
-                        <span class="date">MICROSTRUCTURE</span>
-                        <h2>Order Flow Analysis</h2>
-                    </header>
-                    <p>Analyzing limit order book imbalances to predict short-term price movements.</p>
-                    <ul class="actions special"><li><span class="button disabled">Coming Soon</span></li></ul>
-                </article>
-
-            </section>
-
-        </div>
-
-        <footer id="footer">
-            <section>
-                <h2>Contact</h2>
-                <p>
-                    Phone: +91 7606813404 <br />
-                    Email: k.niranjan2006@gmail.com <br />
-                    LinkedIn: <a href="https://www.linkedin.com/in/niranjan-krishnarajarajan-768625332/">Profile</a>
-                </p>
-            </section>
-        </footer>
-
-        <div id="copyright">
-            <ul>
-                <li>&copy; Niranjan Krishna</li>
-                <li>Design: HTML5 UP</li>
-            </ul>
-        </div>
+        </section>
 
     </div>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
+    <footer>
+        <div class="container">
+            <p class="mono">Niranjan Krishna // Quant_Portfolio_v2.0</p>
+            <p style="margin-top: 10px; opacity: 0.5;">+91 7606813404 • k.niranjan2006@gmail.com</p>
+        </div>
+    </footer>
 
     <script>
-        // 1. TYPING EFFECT FOR INTRO
-        const textToType = "Quant Finance • Machine Learning • Web3";
-        const typingElement = document.getElementById('typing-text');
-        let i = 0;
-
-        function typeWriter() {
-            if (i < textToType.length) {
-                typingElement.innerHTML += textToType.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50); // Speed of typing
-            }
-        }
-        // Start typing after page load
-        window.onload = function() {
-            setTimeout(typeWriter, 500);
-        };
-
-        // 2. PROJECT FILTERING LOGIC
-        function filterProjects(category) {
-            // Update active button state
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            // Filter logic
-            const projects = document.querySelectorAll('.project-item');
-            projects.forEach(project => {
-                if (category === 'all' || project.classList.contains(category)) {
-                    project.style.display = 'block';
-                    project.style.animation = 'fadeIn 0.5s';
-                } else {
-                    project.style.display = 'none';
-                }
-            });
-        }
-
-        // 3. LIVE RANDOM WALK CHART (Chart.js)
-        const ctx = document.getElementById('liveChart').getContext('2d');
+        const ctx = document.getElementById('financeChart').getContext('2d');
         
-        // Generate initial data
-        let dataPoints = [100];
-        let labels = [0];
-        for(let j=1; j<50; j++) {
-            let change = (Math.random() - 0.5) * 2;
-            dataPoints.push(dataPoints[j-1] + change);
-            labels.push(j);
+        // Gradient for the chart line (Green fade)
+        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(0, 255, 136, 0.2)');
+        gradient.addColorStop(1, 'rgba(0, 255, 136, 0)');
+
+        // Initial Data
+        let dataPoints = [];
+        let labels = [];
+        let price = 100;
+        
+        for(let i=0; i<100; i++) {
+            labels.push(i);
+            dataPoints.push(price);
         }
 
-        const myChart = new Chart(ctx, {
+        const chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Simulated Asset Price (GBM)',
+                    label: 'Asset_Price',
                     data: dataPoints,
-                    borderColor: '#ffffff',
-                    borderWidth: 1,
+                    borderColor: '#00ff88',
+                    borderWidth: 2,
+                    backgroundColor: gradient,
+                    fill: true,
+                    tension: 0.1,
                     pointRadius: 0,
-                    fill: false,
-                    tension: 0.4
+                    pointHoverRadius: 4
                 }]
             },
             options: {
@@ -293,86 +337,30 @@
                     x: { display: false },
                     y: { 
                         display: true, 
-                        grid: { color: 'rgba(255,255,255,0.1)' },
-                        ticks: { color: 'rgba(255,255,255,0.5)' } 
+                        grid: { color: '#1a1a1a' },
+                        ticks: { color: '#444', font: { family: 'JetBrains Mono' } } 
                     }
-                }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
             }
         });
 
-        // Update chart live
+        // Simulation Logic (Random Walk)
         setInterval(() => {
-            const lastVal = dataPoints[dataPoints.length - 1];
-            const change = (Math.random() - 0.5) * 5; // Volatility
-            const newVal = lastVal + change;
+            const volatility = 0.8;
+            const change = (Math.random() - 0.5) * volatility;
+            price = price + change;
             
-            dataPoints.push(newVal);
-            labels.push(labels.length);
+            // Remove first, add new
+            dataPoints.shift();
+            dataPoints.push(price);
             
-            if(dataPoints.length > 100) {
-                dataPoints.shift();
-                labels.shift();
-            }
-            
-            myChart.update();
-        }, 100);
-
-        // 4. BACKGROUND PARTICLE NETWORK (Neural Net Vibe)
-        const canvas = document.getElementById("quant-canvas");
-        const c = canvas.getContext("2d");
-        
-        let w, h;
-        const setSize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-        setSize();
-        window.addEventListener("resize", setSize);
-
-        const particles = [];
-        const particleCount = 60; // Number of nodes
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * w;
-                this.y = Math.random() * h;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > w) this.vx *= -1;
-                if (this.y < 0 || this.y > h) this.vy *= -1;
-            }
-        }
-
-        for (let k = 0; k < particleCount; k++) particles.push(new Particle());
-
-        function animateParticles() {
-            c.clearRect(0, 0, w, h);
-            c.fillStyle = "rgba(255,255,255,0.3)";
-            c.strokeStyle = "rgba(255,255,255,0.1)";
-
-            particles.forEach(p => {
-                p.update();
-                c.beginPath();
-                c.arc(p.x, p.y, 2, 0, Math.PI * 2);
-                c.fill();
-                
-                // Connect particles (Neural Net style)
-                particles.forEach(p2 => {
-                    const dx = p.x - p2.x;
-                    const dy = p.y - p2.y;
-                    const dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 150) {
-                        c.beginPath();
-                        c.moveTo(p.x, p.y);
-                        c.lineTo(p2.x, p2.y);
-                        c.stroke();
-                    }
-                });
-            });
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
+            chart.update();
+        }, 50); // Speed of update
     </script>
+
 </body>
 </html>
