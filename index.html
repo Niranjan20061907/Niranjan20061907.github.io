@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Niranjan Krishna | Quant Systems</title>
+    <!-- Updated Title -->
+    <title>Niranjan Krishna | Portfolio Website</title>
     
+    <!-- Custom Favicon (Green Chart Icon) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💹</text></svg>">
+
     <!-- Fonts: Inter (UI) & JetBrains Mono (Code) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +27,7 @@
             --card-bg: #0b0c0f;
             --accent-green: #00ff88;
             --accent-blue: #00f0ff;
+            --accent-purple: #bd00ff;
             --accent-red: #ff3366;
             --text-main: #e0e0e0;
             --text-muted: #888888;
@@ -55,6 +60,7 @@
         .mono { font-family: var(--font-code); }
         .green { color: var(--accent-green); }
         .blue { color: var(--accent-blue); }
+        .purple { color: var(--accent-purple); }
         .red { color: var(--accent-red); }
         
         /* --- BACKGROUND GRID --- */
@@ -110,17 +116,28 @@
         .cursor { display: inline-block; width: 8px; height: 15px; background: var(--accent-green); animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* --- TICKER --- */
+        /* --- TICKER (SEAMLESS LOOP) --- */
         .ticker-wrap {
-            width: 100%; overflow: hidden; background: #0b0c0f; border-top: 1px solid #222; border-bottom: 1px solid #222;
+            width: 100%; overflow: hidden; background: #0b0c0f; 
+            border-top: 1px solid #222; border-bottom: 1px solid #222;
             padding: 12px 0; margin-bottom: 80px;
+            display: flex;
         }
-        .ticker { display: flex; animation: ticker 25s linear infinite; }
+        .ticker-track {
+            display: flex;
+            animation: scroll 40s linear infinite; /* Adjust speed here */
+        }
         .ticker-item { 
-            flex-shrink: 0; padding: 0 2rem; font-family: var(--font-code); font-size: 0.85rem; letter-spacing: 1px;
-            display: flex; align-items: center; gap: 8px;
+            flex-shrink: 0; padding: 0 2rem; 
+            font-family: var(--font-code); font-size: 0.85rem; letter-spacing: 1px;
+            display: flex; align-items: center; gap: 8px; white-space: nowrap;
         }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        
+        /* Moves the track exactly 50% to the left (assuming 2 sets of items) */
+        @keyframes scroll { 
+            0% { transform: translateX(0); } 
+            100% { transform: translateX(-50%); } 
+        }
 
         /* --- ABOUT SECTION --- */
         .about-grid {
@@ -198,7 +215,7 @@
         <h1>QUANTITATIVE<br>ENGINEERING</h1>
         
         <div class="terminal-box">
-            <p><span class="prompt">user@niranjan:~$</span></p>
+            <p><span class="prompt">user@niranjan:~$</span> cat bio.txt</p>
             <div style="margin-top: 10px; color: #ccc; line-height: 1.8;">
                 > Developing high-performance financial systems.<br>
                 > Combining <span class="green">Machine Learning</span> with Market Microstructure.<br>
@@ -208,22 +225,33 @@
         </div>
     </div>
 
-    <!-- SKILLS TICKER -->
+    <!-- SKILLS TICKER (Seamless Loop Structure) -->
+    <!-- UPDATED: Only Red/Green Arrows -->
     <div class="ticker-wrap">
-        <div class="ticker">
+        <div class="ticker-track">
+            <!-- SET 1 -->
             <div class="ticker-item">PYTHON <span class="green"><i class="fas fa-caret-up"></i></span></div>
-            <div class="ticker-item">SOLIDITY <span class="blue"><i class="fas fa-circle" style="font-size: 6px;"></i></span></div>
+            <div class="ticker-item">NEURAL_NETWORKS <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">SOLIDITY <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">DEEP_LEARNING <span class="green"><i class="fas fa-caret-up"></i></span></div>
             <div class="ticker-item">STOCHASTIC_CALCULUS <span class="green"><i class="fas fa-caret-up"></i></span></div>
-            <div class="ticker-item">C++ <span class="green"><i class="fas fa-caret-up"></i></span></div>
-            <div class="ticker-item">TIME_SERIES <span class="blue"><i class="fas fa-circle" style="font-size: 6px;"></i></span></div>
+            <div class="ticker-item">CONVEX_OPTIMIZATION <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">C++ <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">TIME_SERIES <span class="green"><i class="fas fa-caret-up"></i></span></div>
             <div class="ticker-item">RISK_MGMT <span class="red"><i class="fas fa-caret-down"></i></span></div>
             <div class="ticker-item">REACT.JS <span class="green"><i class="fas fa-caret-up"></i></span></div>
-            <!-- Duplicate for seamless loop -->
+
+            <!-- SET 2 (Duplicate of Set 1 for seamless loop) -->
             <div class="ticker-item">PYTHON <span class="green"><i class="fas fa-caret-up"></i></span></div>
-            <div class="ticker-item">SOLIDITY <span class="blue"><i class="fas fa-circle" style="font-size: 6px;"></i></span></div>
+            <div class="ticker-item">NEURAL_NETWORKS <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">SOLIDITY <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">DEEP_LEARNING <span class="green"><i class="fas fa-caret-up"></i></span></div>
             <div class="ticker-item">STOCHASTIC_CALCULUS <span class="green"><i class="fas fa-caret-up"></i></span></div>
-            <div class="ticker-item">C++ <span class="green"><i class="fas fa-caret-up"></i></span></div>
-            <div class="ticker-item">TIME_SERIES <span class="blue"><i class="fas fa-circle" style="font-size: 6px;"></i></span></div>
+            <div class="ticker-item">CONVEX_OPTIMIZATION <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">C++ <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">TIME_SERIES <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">RISK_MGMT <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">REACT.JS <span class="green"><i class="fas fa-caret-up"></i></span></div>
         </div>
     </div>
 
@@ -274,11 +302,14 @@
     <!-- LIVE CHART SECTION -->
     <div class="container">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px;">
-            <h2 class="section-title" style="margin-bottom: 0; border: none; padding: 0;">Market Sim</h2>
-            <span class="mono green" style="font-size: 0.8rem;"><i class="fas fa-circle fa-beat" style="font-size: 8px;"></i> LIVE FEED</span>
+            <h2 class="section-title" style="margin-bottom: 0; border: none; padding: 0;">Alpha Generation</h2>
+            <div class="mono" style="text-align: right; font-size: 0.8rem;">
+                <div class="green"><i class="fas fa-circle fa-beat" style="font-size: 8px;"></i> LIVE: BTC/USD</div>
+                <div class="purple" style="opacity: 0.8;">-- ML_PREDICTION_MODEL</div>
+            </div>
         </div>
         <div class="chart-module">
-            <div style="height: 300px;">
+            <div style="height: 350px;">
                 <canvas id="financeChart"></canvas>
             </div>
         </div>
@@ -374,47 +405,72 @@
         // --- CHART JS SETUP ---
         const ctx = document.getElementById('financeChart').getContext('2d');
         
-        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(0, 255, 136, 0.15)');
-        gradient.addColorStop(1, 'rgba(0, 255, 136, 0)');
+        // Gradient for Main Price (Green)
+        let gradientGreen = ctx.createLinearGradient(0, 0, 0, 400);
+        gradientGreen.addColorStop(0, 'rgba(0, 255, 136, 0.2)');
+        gradientGreen.addColorStop(1, 'rgba(0, 255, 136, 0)');
+
+        // Gradient for Prediction (Purple)
+        let gradientPurple = ctx.createLinearGradient(0, 0, 0, 400);
+        gradientPurple.addColorStop(0, 'rgba(189, 0, 255, 0.1)');
+        gradientPurple.addColorStop(1, 'rgba(189, 0, 255, 0)');
 
         let dataPoints = [];
+        let predPoints = [];
         let labels = [];
         let price = 100;
+        let pred = 100;
         
         // Initial Fill
-        for(let i=0; i<60; i++) {
+        for(let i=0; i<80; i++) {
             labels.push('');
             dataPoints.push(price);
+            predPoints.push(pred);
         }
 
         const chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
-                datasets: [{
-                    label: 'BTC/USD-Sim',
-                    data: dataPoints,
-                    borderColor: '#00ff88',
-                    borderWidth: 2,
-                    backgroundColor: gradient,
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 0,
-                    pointHoverRadius: 5
-                }]
+                datasets: [
+                    {
+                        label: 'BTC/USD',
+                        data: dataPoints,
+                        borderColor: '#00ff88',
+                        borderWidth: 2,
+                        backgroundColor: gradientGreen,
+                        fill: true,
+                        tension: 0.4, // Smoother curve
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    },
+                    {
+                        label: 'AI Prediction',
+                        data: predPoints,
+                        borderColor: '#bd00ff',
+                        borderWidth: 1.5,
+                        borderDash: [5, 5], // Dashed line for prediction
+                        backgroundColor: gradientPurple,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }
+                ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: false,
+                animation: {
+                    duration: 1000,
+                    easing: 'linear'
+                },
                 plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
                 scales: {
                     x: { display: false },
                     y: { 
                         display: true, 
                         position: 'right',
-                        grid: { color: '#1a1a1a' },
+                        grid: { color: 'rgba(255,255,255,0.05)' },
                         ticks: { color: '#555', font: { family: 'JetBrains Mono' } } 
                     }
                 },
@@ -426,16 +482,26 @@
         });
 
         // Simulation Loop
+        // 200ms interval = slower, more deliberate movement
         setInterval(() => {
-            const volatility = 1.5;
+            const volatility = 0.8;
+            
+            // Random Walk for Price
             const change = (Math.random() - 0.5) * volatility;
             price = price + change;
             
+            // Lagged/Smoothed Walk for Prediction (Simulates ML trying to catch up)
+            const predChange = (Math.random() - 0.5) * (volatility * 0.8) + (price - pred) * 0.05;
+            pred = pred + predChange;
+
+            // Remove old, add new
             dataPoints.shift();
+            predPoints.shift();
             dataPoints.push(price);
+            predPoints.push(pred);
             
-            chart.update();
-        }, 80);
+            chart.update('none'); // 'none' mode prevents full re-render flickering
+        }, 150);
     </script>
 
 </body>
