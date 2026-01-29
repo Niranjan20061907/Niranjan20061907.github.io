@@ -3,301 +3,506 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Niranjan K | Quant Engineer</title>
+    <!-- Updated Title -->
+    <title>Niranjan Krishna | Portfolio Website</title>
     
+    <!-- Custom Favicon (Green Chart Icon) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💹</text></svg>">
+
+    <!-- Fonts: Inter (UI) & JetBrains Mono (Code) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for Financial Data Viz -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        /* --- CORE VARIABLES --- */
         :root {
-            --bg-color: #0a0f1c;
-            --card-bg: #111827;
-            --text-primary: #ffffff;
-            --text-secondary: #9ca3af;
-            --accent: #3b82f6; /* Blue */
-            --accent-glow: rgba(59, 130, 246, 0.3);
-            --border: #1f2937;
+            --bg-color: #050505;
+            --card-bg: #0b0c0f;
+            --accent-green: #00ff88;
+            --accent-blue: #00f0ff;
+            --accent-purple: #bd00ff;
+            --accent-red: #ff3366;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --font-ui: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --grid-color: rgba(0, 255, 136, 0.03);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
         body {
             background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            overflow-x: hidden;
             line-height: 1.6;
         }
 
-        /* Container */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
+        /* --- CRT SCANLINE EFFECT --- */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none; z-index: 999; opacity: 0.3;
         }
 
-        /* Header / Hero */
-        header {
-            text-align: center;
-            padding: 4rem 0;
+        /* --- UTILITIES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        .mono { font-family: var(--font-code); }
+        .green { color: var(--accent-green); }
+        .blue { color: var(--accent-blue); }
+        .purple { color: var(--accent-purple); }
+        .red { color: var(--accent-red); }
+        
+        /* --- BACKGROUND GRID --- */
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
         }
 
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(to right, #fff, #9ca3af);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* --- NAV --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100; background: rgba(5,5,5,0.9);
         }
+        .logo { font-family: var(--font-code); font-weight: 700; font-size: 1.1rem; letter-spacing: -1px; }
+        
+        .socials { display: flex; gap: 20px; align-items: center; }
+        .socials a { font-size: 1.2rem; opacity: 0.8; }
+        .socials a:hover { opacity: 1; color: var(--accent-green); transform: translateY(-2px); }
 
-        .subtitle {
-            font-family: 'Fira Code', monospace;
-            color: var(--accent);
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
+        /* --- HERO --- */
+        .hero {
+            min-height: 80vh; display: flex; flex-direction: column; justify-content: center;
+            padding-top: 40px;
         }
-
-        .social-links a {
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            margin: 0 10px;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Terminal Section */
-        .terminal {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            margin-bottom: 3rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        .terminal-header {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .red { background: #ef4444; }
-        .yellow { background: #f59e0b; }
-        .green { background: #10b981; }
-
-        .command { color: var(--accent); }
-        .output { color: var(--text-secondary); margin-bottom: 1rem; }
-
-        /* Projects Grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px var(--accent-glow);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .card-desc {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-stack {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 1.5rem;
-        }
-
-        .tag {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent);
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .btn {
-            display: inline-block;
-            text-decoration: none;
-            color: #fff;
-            background: var(--border);
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .btn:hover {
-            background: var(--accent);
-        }
-
-        /* Stats */
-        .stats-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 3rem;
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 0.95; font-weight: 800; letter-spacing: -2px;
+            background: linear-gradient(to bottom right, #fff, #666);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
         }
         
-        .stats-img {
-            height: 160px;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 4rem 0;
-            color: var(--text-secondary);
+        /* Terminal Box */
+        .terminal-box {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid #333;
+            border-left: 4px solid var(--accent-green);
+            padding: 20px;
+            border-radius: 4px;
+            font-family: var(--font-code);
             font-size: 0.9rem;
+            max-width: 650px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+        }
+        .prompt { color: var(--accent-green); margin-right: 10px; }
+        .cursor { display: inline-block; width: 8px; height: 15px; background: var(--accent-green); animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* --- TICKER (SEAMLESS LOOP) --- */
+        .ticker-wrap {
+            width: 100%; overflow: hidden; background: #0b0c0f; 
+            border-top: 1px solid #222; border-bottom: 1px solid #222;
+            padding: 12px 0; margin-bottom: 80px;
+            display: flex;
+        }
+        .ticker-track {
+            display: flex;
+            animation: scroll 40s linear infinite; /* Adjust speed here */
+        }
+        .ticker-item { 
+            flex-shrink: 0; padding: 0 2rem; 
+            font-family: var(--font-code); font-size: 0.85rem; letter-spacing: 1px;
+            display: flex; align-items: center; gap: 8px; white-space: nowrap;
+        }
+        
+        /* Moves the track exactly 50% to the left (assuming 2 sets of items) */
+        @keyframes scroll { 
+            0% { transform: translateX(0); } 
+            100% { transform: translateX(-50%); } 
         }
 
-        @media (min-width: 768px) {
-            h1 { font-size: 4.5rem; }
-            .projects-grid { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+        /* --- ABOUT SECTION --- */
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 100px;
+            align-items: center;
+        }
+        .bio-text p { margin-bottom: 20px; color: #ccc; font-size: 1.05rem; }
+        
+        .skill-terminal {
+            background: #0f1115; border: 1px solid #222; padding: 25px; border-radius: 8px;
+        }
+        .skill-bar-container { margin-bottom: 15px; }
+        .skill-info { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 5px; }
+        .skill-bar { height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
+        .skill-fill { height: 100%; background: var(--accent-green); width: 0%; transition: width 1.5s ease-out; }
+
+        /* --- PROJECTS --- */
+        .section-title {
+            font-size: 1.8rem; margin-bottom: 40px; border-left: 4px solid var(--accent-blue); padding-left: 20px;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 100px; }
+        
+        .project-card {
+            background: var(--card-bg); border: 1px solid #222; padding: 30px; border-radius: 8px;
+            transition: 0.3s; position: relative; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .project-card:hover { transform: translateY(-5px); border-color: var(--accent-green); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .tech-stack { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .tech-stack span { 
+            background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; 
+            font-size: 0.75rem; font-family: var(--font-code); color: var(--accent-blue);
+        }
+
+        /* --- CHART MODULE --- */
+        .chart-module { margin-bottom: 100px; border: 1px solid #222; background: #0b0c0f; padding: 20px; border-radius: 12px; }
+
+        /* --- FOOTER --- */
+        footer { border-top: 1px solid #222; padding: 60px 0; text-align: center; color: var(--text-muted); }
+
+        @media(max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3rem; }
         }
     </style>
 </head>
 <body>
 
+    <div class="scanlines"></div>
+    <div class="bg-grid"></div>
+
+    <!-- NAVIGATION -->
     <div class="container">
-        <header>
-            <h1>Niranjan K</h1>
-            <div class="subtitle">Quant Engineer | Algorithmic Trader</div>
-            
-            <div class="social-links">
-                <a href="https://github.com/niranjan20061907" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/niranjan-krishnarajarajan-768625332/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="mailto:k.niranjan2006@gmail.com"><i class="fas fa-envelope"></i></a>
+        <nav>
+            <div class="logo">NIRANJAN<span class="green">_KRISHNA</span></div>
+            <div class="socials">
+                <a href="#about" style="font-size: 0.9rem; margin-right: 15px;">ABOUT</a>
+                <a href="#projects" style="font-size: 0.9rem; margin-right: 15px;">PROJECTS</a>
+                
+                <!-- Github Icon -->
+                <a href="https://github.com/Niranjan20061907" target="_blank" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <!-- LinkedIn Icon -->
+                <a href="https://www.linkedin.com/in/niranjan-krishnarajarajan-768625332/" target="_blank" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
             </div>
-        </header>
+        </nav>
+    </div>
 
-        <section>
-            <div class="terminal">
-                <div class="terminal-header">
-                    <div class="dot red"></div>
-                    <div class="dot yellow"></div>
-                    <div class="dot green"></div>
-                </div>
-                <div class="code-block">
-                    <div><span class="command">user@quant-lab:~$</span> whoami</div>
-                    <div class="output">> Computer Science Engineer bridging Math, ML, and Finance.</div>
-                    
-                    <div><span class="command">user@quant-lab:~$</span> cat mission.txt</div>
-                    <div class="output">> "Risk comes from not knowing what you're doing."</div>
-                    <div class="output">> Focus: Market Microstructure, Stochastic Volatility, RL Agents.</div>
+    <!-- HERO SECTION -->
+    <div class="container hero">
+        <div class="mono green" style="margin-bottom: 10px;">> STATUS: ONLINE</div>
+        <h1>QUANTITATIVE<br>ENGINEERING</h1>
+        
+        <div class="terminal-box">
+            <p><span class="prompt">user@niranjan:~$</span> cat bio.txt</p>
+            <div style="margin-top: 10px; color: #ccc; line-height: 1.8;">
+                > Developing high-performance financial systems.<br>
+                > Combining <span class="green">Machine Learning</span> with Market Microstructure.<br>
+                > Building decentralized solutions on <span class="blue">Web3</span>.<br>
+                > <span class="mono" style="opacity: 0.6">Ready to deploy.</span><span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SKILLS TICKER (Seamless Loop Structure) -->
+    <!-- UPDATED: Only Red/Green Arrows -->
+    <div class="ticker-wrap">
+        <div class="ticker-track">
+            <!-- SET 1 -->
+            <div class="ticker-item">PYTHON <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">NEURAL_NETWORKS <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">SOLIDITY <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">DEEP_LEARNING <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">STOCHASTIC_CALCULUS <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">CONVEX_OPTIMIZATION <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">C++ <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">TIME_SERIES <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">RISK_MGMT <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">REACT.JS <span class="green"><i class="fas fa-caret-up"></i></span></div>
+
+            <!-- SET 2 (Duplicate of Set 1 for seamless loop) -->
+            <div class="ticker-item">PYTHON <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">NEURAL_NETWORKS <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">SOLIDITY <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">DEEP_LEARNING <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">STOCHASTIC_CALCULUS <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">CONVEX_OPTIMIZATION <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">C++ <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">TIME_SERIES <span class="green"><i class="fas fa-caret-up"></i></span></div>
+            <div class="ticker-item">RISK_MGMT <span class="red"><i class="fas fa-caret-down"></i></span></div>
+            <div class="ticker-item">REACT.JS <span class="green"><i class="fas fa-caret-up"></i></span></div>
+        </div>
+    </div>
+
+    <!-- ABOUT SECTION -->
+    <div class="container" id="about">
+        <h2 class="section-title">Trader Profile / About</h2>
+        <div class="about-grid">
+            <div class="bio-text">
+                <p>
+                    I am a developer focused on the intersection of <b>Finance</b> and <b>Technology</b>. My work involves building systems that can analyze data, predict trends, and execute logic autonomously.
+                </p>
+                <p>
+                    From backtesting trading strategies in Python to deploying smart contracts on the Blockchain, I aim to create robust financial tools. I am currently learning advanced Market Microstructure and Factor Modeling.
+                </p>
+                <div style="margin-top: 30px;">
+                    <a href="https://www.linkedin.com/in/niranjan-krishnarajarajan-768625332/" target="_blank" class="mono" style="border-bottom: 1px solid var(--accent-green); padding-bottom: 5px;">
+                        > CONNECT ON LINKEDIN
+                    </a>
                 </div>
             </div>
-        </section>
 
-        <h2 style="border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-bottom: 2rem;">Featured Projects</h2>
+            <!-- Skills visualizer -->
+            <div class="skill-terminal">
+                <div class="mono" style="margin-bottom: 20px; color: var(--accent-blue); border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    > SKILL_ALLOCATION_MATRIX
+                </div>
+                
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>QUANT_FINANCE</span><span>85%</span></div>
+                    <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+                </div>
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>PYTHON / ML</span><span>90%</span></div>
+                    <div class="skill-bar"><div class="skill-fill" style="width: 90%;"></div></div>
+                </div>
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>WEB3 / SOLIDITY</span><span>75%</span></div>
+                    <div class="skill-bar"><div class="skill-fill" style="width: 75%;"></div></div>
+                </div>
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>FULL_STACK_DEV</span><span>80%</span></div>
+                    <div class="skill-bar"><div class="skill-fill" style="width: 80%;"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIVE CHART SECTION -->
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px;">
+            <h2 class="section-title" style="margin-bottom: 0; border: none; padding: 0;">Alpha Generation</h2>
+            <div class="mono" style="text-align: right; font-size: 0.8rem;">
+                <div class="green"><i class="fas fa-circle fa-beat" style="font-size: 8px;"></i> LIVE: BTC/USD</div>
+                <div class="purple" style="opacity: 0.8;">-- ML_PREDICTION_MODEL</div>
+            </div>
+        </div>
+        <div class="chart-module">
+            <div style="height: 350px;">
+                <canvas id="financeChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECTS SECTION -->
+    <div class="container" id="projects">
+        <h2 class="section-title">Deployments</h2>
         
         <div class="projects-grid">
             
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Deep RL Derivative Hedging</h3>
-                    <i class="fas fa-robot" style="color: var(--text-secondary);"></i>
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div>
+                    <div class="mono" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                        <span>01 // DEPLOYED</span>
+                    </div>
+                    <h3>FlowMint Web3</h3>
+                    <p style="margin-top: 15px; color: #aaa; font-size: 0.9rem;">
+                        A decentralized platform for creator revenue tokenization. Implements solidity smart contracts for automated revenue sharing.
+                    </p>
                 </div>
-                <p class="card-desc">
-                    An autonomous trading agent solving the <b>"Hedging with Frictions"</b> problem where Black-Scholes fails. Trained a PPO agent to minimize variance and transaction costs using a custom Gymnasium environment.
-                </p>
-                <div class="tech-stack">
-                    <span class="tag">Python</span>
-                    <span class="tag">PyTorch</span>
-                    <span class="tag">Gymnasium</span>
-                    <span class="tag">Quant</span>
-                </div>
-                <a href="https://github.com/niranjan20061907/rl-derivative-hedging" class="btn" target="_blank">
-                    <i class="fab fa-github"></i> View Code
-                </a>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Order Flow Imbalance</h3>
-                    <i class="fas fa-chart-line" style="color: var(--text-secondary);"></i>
-                </div>
-                <p class="card-desc">
-                    Market microstructure research predicting short-term price moves. Built a pipeline to transform raw Limit Order Book (LOB) data into OFI signals and validated alpha using Logistic Regression.
-                </p>
-                <div class="tech-stack">
-                    <span class="tag">Scikit-Learn</span>
-                    <span class="tag">Pandas</span>
-                    <span class="tag">LOB Data</span>
-                </div>
-                <a href="https://github.com/niranjan20061907/order-flow-imbalances" class="btn" target="_blank">
-                    <i class="fab fa-github"></i> View Code
-                </a>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Flowmint</h3>
-                    <i class="fab fa-ethereum" style="color: var(--text-secondary);"></i>
-                </div>
-                <p class="card-desc">
-                    Decentralized Revenue Tokenization Protocol. Full-stack DApp allowing creators to tokenize future revenue streams using smart contracts.
-                </p>
-                <div class="tech-stack">
-                    <span class="tag">Solidity</span>
-                    <span class="tag">Next.js</span>
-                    <span class="tag">FastAPI</span>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <a href="https://github.com/niranjan20061907/flowmint" class="btn" target="_blank">
-                        <i class="fab fa-github"></i> Code
+                <div>
+                    <div class="tech-stack">
+                        <span>Next.js</span><span>Solidity</span><span>FastAPI</span>
+                    </div>
+                    <a href="https://flowmint-f75h.onrender.com/" target="_blank" class="mono green" style="display: inline-block; margin-top: 20px;">
+                        > LAUNCH TERMINAL
                     </a>
-                    <a href="https://flowmint-f75h.onrender.com" class="btn" target="_blank" style="background: var(--accent);">
-                        <i class="fas fa-external-link-alt"></i> Live
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div>
+                    <div class="mono" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                        <span>02 // RESEARCH</span>
+                    </div>
+                    <h3>Efficient Frontier</h3>
+                    <p style="margin-top: 15px; color: #aaa; font-size: 0.9rem;">
+                        Python engine optimizing portfolio weights based on risk-return profiles (Markowitz Model) using historical pricing data.
+                    </p>
+                </div>
+                <div>
+                    <div class="tech-stack">
+                        <span>Python</span><span>NumPy</span><span>Pandas</span>
+                    </div>
+                    <a href="https://github.com/Niranjan20061907" target="_blank" class="mono blue" style="display: inline-block; margin-top: 20px;">
+                        > VIEW SOURCE
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div>
+                    <div class="mono" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                        <span>03 // ALGORITHM</span>
+                    </div>
+                    <h3>Order Flow Analyser</h3>
+                    <p style="margin-top: 15px; color: #aaa; font-size: 0.9rem;">
+                        Detecting institutional order book imbalances to predict short-term alpha signals in high-frequency environments.
+                    </p>
+                </div>
+                <div>
+                    <div class="tech-stack">
+                        <span>Statistics</span><span>Microstructure</span>
+                    </div>
+                    <a href="https://github.com/Niranjan20061907" target="_blank" class="mono blue" style="display: inline-block; margin-top: 20px;">
+                        > VIEW SOURCE
                     </a>
                 </div>
             </div>
 
         </div>
-
-        <div class="stats-container">
-            <img class="stats-img" src="https://github-readme-stats.vercel.app/api?username=niranjan20061907&show_icons=true&theme=radical&hide_border=true&count_private=true" alt="GitHub Stats">
-            <img class="stats-img" src="https://github-readme-stats.vercel.app/api/top-langs/?username=niranjan20061907&layout=compact&theme=radical&hide_border=true" alt="Top Languages">
-        </div>
-
-        <footer>
-            &copy; 2026 Niranjan K. Built with ☕ and Python.
-        </footer>
     </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="socials" style="justify-content: center; margin-bottom: 20px;">
+                <a href="https://github.com/Niranjan20061907" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/niranjan-krishnarajarajan-768625332/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="mailto:k.niranjan2006@gmail.com"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p class="mono" style="font-size: 0.8rem;">Niranjan Krishna // Systems_Online</p>
+            <p style="margin-top: 5px; opacity: 0.4; font-size: 0.75rem;">+91 7606813404</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        // --- CHART JS SETUP ---
+        const ctx = document.getElementById('financeChart').getContext('2d');
+        
+        // Gradient for Main Price (Green)
+        let gradientGreen = ctx.createLinearGradient(0, 0, 0, 400);
+        gradientGreen.addColorStop(0, 'rgba(0, 255, 136, 0.2)');
+        gradientGreen.addColorStop(1, 'rgba(0, 255, 136, 0)');
+
+        // Gradient for Prediction (Purple)
+        let gradientPurple = ctx.createLinearGradient(0, 0, 0, 400);
+        gradientPurple.addColorStop(0, 'rgba(189, 0, 255, 0.1)');
+        gradientPurple.addColorStop(1, 'rgba(189, 0, 255, 0)');
+
+        let dataPoints = [];
+        let predPoints = [];
+        let labels = [];
+        let price = 100;
+        let pred = 100;
+        
+        // Initial Fill
+        for(let i=0; i<80; i++) {
+            labels.push('');
+            dataPoints.push(price);
+            predPoints.push(pred);
+        }
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'BTC/USD',
+                        data: dataPoints,
+                        borderColor: '#00ff88',
+                        borderWidth: 2,
+                        backgroundColor: gradientGreen,
+                        fill: true,
+                        tension: 0.4, // Smoother curve
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    },
+                    {
+                        label: 'AI Prediction',
+                        data: predPoints,
+                        borderColor: '#bd00ff',
+                        borderWidth: 1.5,
+                        borderDash: [5, 5], // Dashed line for prediction
+                        backgroundColor: gradientPurple,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 1000,
+                    easing: 'linear'
+                },
+                plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+                scales: {
+                    x: { display: false },
+                    y: { 
+                        display: true, 
+                        position: 'right',
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#555', font: { family: 'JetBrains Mono' } } 
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'nearest',
+                },
+            }
+        });
+
+        // Simulation Loop
+        // 200ms interval = slower, more deliberate movement
+        setInterval(() => {
+            const volatility = 0.8;
+            
+            // Random Walk for Price
+            const change = (Math.random() - 0.5) * volatility;
+            price = price + change;
+            
+            // Lagged/Smoothed Walk for Prediction (Simulates ML trying to catch up)
+            const predChange = (Math.random() - 0.5) * (volatility * 0.8) + (price - pred) * 0.05;
+            pred = pred + predChange;
+
+            // Remove old, add new
+            dataPoints.shift();
+            predPoints.shift();
+            dataPoints.push(price);
+            predPoints.push(pred);
+            
+            chart.update('none'); // 'none' mode prevents full re-render flickering
+        }, 150);
+    </script>
 
 </body>
 </html>
